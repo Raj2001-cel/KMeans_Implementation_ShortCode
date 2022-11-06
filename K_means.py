@@ -27,7 +27,7 @@ def euclidean(centroids, point):
 
 # Generalising the approach to fit 'n' number of clusters
 def clusterAssignmentDecisionAndPopulation(n, distances, points):
-    
+    # print("HEYYYYY",distances)
     # Array of Arrays having points in each cluster
     clusters = dict()    
     for i in range(len(distances)):
@@ -45,59 +45,52 @@ def clusterAssignmentDecisionAndPopulation(n, distances, points):
                 # print("Value", clusters.get(j))
     return clusters
 
-def getCentroids(cluster1,cluster2):
-    sum_x = 0
-    sum_y = 0
-    for point in cluster1:
-        sum_x =  sum_x + point[0]
-        sum_y =  sum_y + point[1]
-    centroid1 = ((sum_x/len(cluster1)) , (sum_y/len(cluster1)))
-    
-
-    sum_x = 0
-    sum_y = 0
-    for point in cluster2:
-        sum_x =  sum_x + point[0]
-        sum_y =  sum_y + point[1]
-    centroid2 = ((sum_x/len(cluster2)) , (sum_y/len(cluster2)))
-
+def getCentroids(clusters):
     centroids = []
-    centroids.append(centroid1)
-    centroids.append(centroid2)
+    for i in range(0,len(clusters)):
+        sum_x = 0
+        sum_y = 0
+        for point in clusters[i]:
+            sum_x =  sum_x + point[0]
+            sum_y =  sum_y + point[1]
+        if len(clusters[i]) != 0:
+            centroid = ((sum_x/len(clusters[i])) , (sum_y/len(clusters[i])))
+            centroids.append(centroid)
+    
     return centroids
 
 
 # MAIN METHOD - 
 points =  [(1.0,1.0),
            (1.0,2.0),
+           (2.0,1.0),
            (2.0,2.0),
-           (2.0,3.0),
-           (4.0,4.0),
-           (4.0,5.0),
-           (5.0,5.0),
-           (5.0,4.0),
-           (4.0,1.0),
-           (4.0,2,0),
-           (5.0,1.0),
-           (5.0,2,0),
+           (4.0,8.0),
+           (4.0,8.0),
+           (5.0,9.0),
+           (5.0,9.0),
+           (8.0,1.0),
+           (8.0,2,0),
+           (9.0,1.0),
+           (9.0,2,0),
            ]
 
 centroids = []
 # getInitialCentroids(centroids)
-centroids = [(1,1),(2,3)]
-
+centroids = [(1,1),(2,3),(5,2)]
+n=3
 distances = []
 for i in points:
     distances.append(euclidean(centroids, i))
 
-clusters = clusterAssignmentDecisionAndPopulation(3, distances, points)
+clusters = clusterAssignmentDecisionAndPopulation(n, distances, points)
 
-for i in range(0,2):
-    centroids = getCentroids(clusters[0],clusters[1])
+for i in range(0,n):
+    centroids = getCentroids(clusters)
     distances = []
     for i in points:
         distances.append(euclidean(centroids, i))
-    clusters = clusterAssignmentDecisionAndPopulation(3, distances, points)
+    clusters = clusterAssignmentDecisionAndPopulation(n, distances, points)
     
 for i in range(0, 8):
     if clusters.get(i) != []:
